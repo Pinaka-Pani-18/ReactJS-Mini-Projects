@@ -38,6 +38,13 @@ const reducer = (state, { type, payload }) => {
           currentValue: null,
         };
       }
+
+      if (state.currentValue == null) {
+        return {
+          ...state,
+          operation: payload.operation,
+        };
+      }
       console.log(state);
       return {
         previousValue: evaluate(state),
@@ -47,6 +54,19 @@ const reducer = (state, { type, payload }) => {
 
     case ACTIONS.ClEAR:
       return {};
+
+    case ACTIONS.DELETE:
+      if (state.currentValue == null && state.previousValue == null) {
+        return state;
+      }
+
+      if (state.currentValue === null) {
+        return state;
+      }
+      return {
+        ...state,
+        currentValue: state.currentValue.slice(0, -1),
+      };
   }
 };
 
@@ -101,7 +121,13 @@ const Calculator = () => {
       >
         AC
       </button>
-      <button>DEL</button>
+      <button
+        onClick={() => {
+          dispatch({ type: ACTIONS.DELETE });
+        }}
+      >
+        DEL
+      </button>
       <OperatorButton operation={"/"} dispatch={dispatch} />
       <DigitButton digit="7" dispatch={dispatch} />
       <DigitButton digit="8" dispatch={dispatch} />
