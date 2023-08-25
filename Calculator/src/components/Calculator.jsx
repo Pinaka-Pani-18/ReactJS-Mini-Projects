@@ -14,11 +14,22 @@ export const ACTIONS = {
 const reducer = (state, { type, payload }) => {
   switch (type) {
     case ACTIONS.ADD:
+      if (state.overwrite) {
+        return {
+          ...state,
+          currentValue: payload.digit,
+          overwrite: false,
+        };
+      }
+
       if (payload.digit === "0" && state.currentValue === "0") {
         return state;
       }
 
-      if (payload.digit === "." && state.currentValue.includes(".")) {
+      if (
+        (payload.digit === "." && state.currentValue == null) ||
+        (payload.digit === "." && state.currentValue.includes("."))
+      ) {
         return state;
       }
 
@@ -38,14 +49,12 @@ const reducer = (state, { type, payload }) => {
           currentValue: null,
         };
       }
-
       if (state.currentValue == null) {
         return {
           ...state,
           operation: payload.operation,
         };
       }
-      console.log(state);
       return {
         previousValue: evaluate(state),
         operation: payload.operation,
@@ -66,6 +75,22 @@ const reducer = (state, { type, payload }) => {
       return {
         ...state,
         currentValue: state.currentValue.slice(0, -1),
+      };
+
+    case ACTIONS.EVALUATE:
+      if (
+        state.operation == null ||
+        state.currentValue == null ||
+        state.currentValue == null
+      ) {
+        return state;
+      }
+      return {
+        ...state,
+        overwrite: true,
+        operation: null,
+        previousValue: null,
+        currentValue: evaluate(state),
       };
   }
 };
@@ -147,7 +172,16 @@ const Calculator = () => {
       <DigitButton digit="0" dispatch={dispatch} />
       <DigitButton digit="." dispatch={dispatch} />
 
-      <button className="span-two">=</button>
+      <button
+        className="span-two"
+        onClick={() => {
+          dispatch({
+            type: ACTIONS.EVALUATE,
+          });
+        }}
+      >
+        =
+      </button>
     </div>
   );
 };
