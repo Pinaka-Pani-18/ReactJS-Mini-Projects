@@ -65,6 +65,14 @@ const reducer = (state, { type, payload }) => {
       return {};
 
     case ACTIONS.DELETE:
+      if (state.overwrite) {
+        return {
+          ...state,
+          currentValue: null,
+          overwrite: false,
+        };
+      }
+
       if (state.currentValue == null && state.previousValue == null) {
         return state;
       }
