@@ -7,15 +7,23 @@ const manRightHand = <div className={styles.manRightHand}></div>;
 const manLeftLeg = <div className={styles.manLeftLeg}></div>;
 const manRightLeg = <div className={styles.manRightLeg}></div>;
 
-const HangManDrawing = () => {
+const HANGMAN_BODY_PARTS = [
+  manHead,
+  manBody,
+  manRightHand,
+  manLeftHand,
+  manRightLeg,
+  manLeftLeg,
+];
+
+type HangManDrawingProps = {
+  numberOfGuesses: number;
+};
+
+const HangManDrawing = ({ numberOfGuesses }: HangManDrawingProps) => {
   return (
     <div className={styles.stand}>
-      {manHead}
-      {manBody}
-      {manLeftHand}
-      {manRightHand}
-      {manLeftLeg}
-      {manRightLeg}
+      {HANGMAN_BODY_PARTS.slice(0, numberOfGuesses)}
       <div className={styles.standHead}></div>
       <div className={styles.standTop}></div>
       <div className={styles.standMiddle}></div>
