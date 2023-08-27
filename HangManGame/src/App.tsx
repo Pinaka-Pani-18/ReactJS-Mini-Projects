@@ -9,7 +9,13 @@ const App = () => {
       <div className="heading">HangMan Game Win or Loss</div>
       <HangManDrawing />
       <HangManWord />
-      <Keyboard />
+      <div
+        style={{
+          alignSelf: "stretch",
+        }}
+      >
+        <Keyboard />
+      </div>
     </div>
   );
 };
