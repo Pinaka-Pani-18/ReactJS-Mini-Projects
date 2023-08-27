@@ -132,6 +132,24 @@ function evaluate(state) {
   return finalResult;
 }
 
+const INTEGER_FORMATTER = new Intl.NumberFormat("en-IN", {
+  maximumFractionDigits: 0,
+});
+
+function formatNumber(value) {
+  if (value == null) {
+    return;
+  }
+
+  const [integer, decimal] = value.toString().split(".");
+
+  if (decimal == null) {
+    return INTEGER_FORMATTER.format(integer);
+  }
+
+  return `${INTEGER_FORMATTER.format(integer)}.${decimal}`;
+}
+
 const Calculator = () => {
   const [{ currentValue, previousValue, operation }, dispatch] = useReducer(
     reducer,
@@ -142,9 +160,9 @@ const Calculator = () => {
     <div className="calculator">
       <div className="output">
         <div className="prev-output">
-          {previousValue} {operation}
+          {formatNumber(previousValue)} {operation}
         </div>
-        <div className="curr-output">{currentValue}</div>
+        <div className="curr-output">{formatNumber(currentValue)}</div>
       </div>
       <button
         className="span-two"
