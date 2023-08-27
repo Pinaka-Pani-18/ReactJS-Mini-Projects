@@ -17,15 +17,18 @@ const App = () => {
     (letter) => !wordToGuess.includes(letter)
   );
 
-  console.log(wordToGuess);
+  const isLoser = inCorrectLetters.length >= 6;
+  const isWinner = wordToGuess
+    .split("")
+    .every((letter) => guessedLetters.includes(letter));
 
   const addGuessedLetter = useCallback(
     (letter: string) => {
-      if (guessedLetters.includes(letter)) return;
+      if (guessedLetters.includes(letter) || isLoser || isWinner) return;
 
       setGuessedLetters((currentLetters) => [...currentLetters, letter]);
     },
-    [guessedLetters]
+    [guessedLetters, isLoser, isWinner]
   );
 
   useEffect(() => {
@@ -42,13 +45,38 @@ const App = () => {
     return () => {
       document.removeEventListener("keypress", handler);
     };
-  }, [guessedLetters]);
+  }, [guessedLetters, addGuessedLetter]);
+
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      const key = e.key;
+      if (key !== "Enter") return;
+
+      e.preventDefault();
+      setGuessedLetters([]);
+      setWordToGuess(getWord());
+    };
+
+    document.addEventListener("keypress", handler);
+
+    return () => {
+      document.removeEventListener("keypress", handler);
+    };
+  }, []);
 
   return (
     <div className="app">
-      <div className="heading">HangMan Game Win or Loss</div>
+      <div className="heading">
+        {isWinner && "Winner!- Refresh to play again"}
+        {isLoser && "Loser!- Refresh to try again"}
+        {isLoser || isWinner ? "" : "HangMan Game (Win or Loss)"}
+      </div>
       <HangManDrawing numberOfGuesses={inCorrectLetters.length} />
-      <HangManWord guessedLetters={guessedLetters} wordToGuess={wordToGuess} />
+      <HangManWord
+        reveal={isLoser}
+        guessedLetters={guessedLetters}
+        wordToGuess={wordToGuess}
+      />
       <div
         style={{
           alignSelf: "stretch",
@@ -60,6 +88,7 @@ const App = () => {
           )}
           inActiveLetters={inCorrectLetters}
           addGuessedLetter={addGuessedLetter}
+          disable={isLoser || isWinner}
         />
       </div>
     </div>
