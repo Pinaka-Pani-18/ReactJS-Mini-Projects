@@ -9,6 +9,7 @@ import RootLayout from "./components/RootLayout.tsx";
 import Home from "./pages/Home.tsx";
 import About from "./pages/About.tsx";
 import Store from "./pages/Store.tsx";
+import ShoppingContextProvider from "./context/ShoppingContext.tsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -21,7 +22,11 @@ const router = createBrowserRouter(
 );
 
 const App = () => {
-  return <RouterProvider router={router} />;
+  return (
+    <ShoppingContextProvider>
+      <RouterProvider router={router} />
+    </ShoppingContextProvider>
+  );
 };
 
 export default App;
