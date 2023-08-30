@@ -23,7 +23,7 @@ type ShoppingCartContext = {
 
 const ShoppingCartContext = createContext({} as ShoppingCartContext);
 
-export function useShoppingCart() {
+export function UseShoppingCart() {
   return useContext(ShoppingCartContext);
 }
 

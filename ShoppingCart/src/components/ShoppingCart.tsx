@@ -1,5 +1,5 @@
 import { Offcanvas, Stack } from "react-bootstrap";
-import { useShoppingCart } from "../context/ShoppingContext";
+import { UseShoppingCart } from "../context/ShoppingContext";
 import CartItem from "./CartItem";
 
 type ShoppingCartProps = {
@@ -7,7 +7,7 @@ type ShoppingCartProps = {
 };
 
 const ShoppingCart = ({ isOpen }: ShoppingCartProps) => {
-  const { closeCart, cartItems } = useShoppingCart();
+  const { closeCart, cartItems } = UseShoppingCart();
   return (
     <Offcanvas show={isOpen} onHide={closeCart} placement="end">
       <Offcanvas.Header closeButton>

@@ -1,7 +1,7 @@
 import { Button, Stack } from "react-bootstrap";
 import stoteItems from "../data/items.json";
 import { formatCurrency } from "../utilities/formatCurrency";
-import { useShoppingCart } from "../context/ShoppingContext";
+import { UseShoppingCart } from "../context/ShoppingContext";
 
 type CartItemProps = {
   id: number;
@@ -9,7 +9,7 @@ type CartItemProps = {
 };
 
 const CartItem = ({ id, quantity }: CartItemProps) => {
-  const { removeFromCart } = useShoppingCart();
+  const { removeFromCart } = UseShoppingCart();
   const item = stoteItems.find((i) => i.id === id);
   if (item == null) return null;
   return (

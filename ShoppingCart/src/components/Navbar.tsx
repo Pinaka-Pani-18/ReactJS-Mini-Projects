@@ -1,9 +1,9 @@
 import { Container, Navbar as NavbarBs, Nav, Button } from "react-bootstrap";
 import { NavLink } from "react-router-dom";
-import { useShoppingCart } from "../context/ShoppingContext";
+import { UseShoppingCart } from "../context/ShoppingContext";
 
 const Navbar = () => {
-  const { cartQuantity, openCart } = useShoppingCart();
+  const { cartQuantity, openCart } = UseShoppingCart();
   return (
     <NavbarBs sticky="top" className="bg-white shadow-sm mb-3">
       <Container>
