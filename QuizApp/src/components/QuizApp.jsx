@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { quiz } from "../quiz";
+import { quiz } from "../data/quiz";
 import Choices from "./Choices";
 import Score from "./Score";
 import Button from "./Button";
@@ -92,7 +92,11 @@ const QuizApp = () => {
           <div className="px-10 text-center">
             <h2 className="text-2xl">Total Questions: {questions.length}</h2>
             <h2 className="text-2xl text-center">
-              Score <p className="text-[6rem] leading-[6rem]">{result.score}</p>
+              Score{" "}
+              <p className="text-[6rem] leading-[6rem] -mb-3">
+                {result.score}/
+                <span className="text-[3rem]">{questions.length * 5}</span>
+              </p>
             </h2>
             <div className="flex gap-4 justify-center items-center">
               <h2 className="text-lg">
