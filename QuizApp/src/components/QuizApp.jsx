@@ -1,5 +1,8 @@
 import { useState } from "react";
 import { quiz } from "../quiz";
+import Choices from "./Choices";
+import Score from "./Score";
+import Button from "./Button";
 
 const QuizApp = () => {
   const [activeQuestion, seActiveQuestion] = useState(0);
@@ -41,10 +44,8 @@ const QuizApp = () => {
   function handleSelected(choice, index) {
     if (correctAnswer === choice) {
       setSelectedAnswer(true);
-      console.log("correct");
     } else {
       setSelectedAnswer(false);
-      console.log("wrong");
     }
     setSelectedAnswerIndex(index);
   }
@@ -57,42 +58,33 @@ const QuizApp = () => {
     <div className="h-auto w-[30rem] bg-white rounded-xl p-5 shadow-xl">
       {!showResult ? (
         <>
-          <div className="mb-3">
-            <span className="text-2xl">
-              {addLeadingZero(activeQuestion + 1)}/
-              <span className="text-base">
-                {addLeadingZero(questions.length)}
-              </span>
-            </span>
-          </div>
+          <Score
+            addLeadingZero={addLeadingZero}
+            activeQuestion={activeQuestion}
+            questions={questions}
+          />
           <h2 className="text-xl">{question}</h2>
           <ul className="flex flex-col gap-3 my-3">
             {choices.map((choice, index) => {
               return (
-                <li
+                <Choices
                   key={index}
-                  onClick={() => handleSelected(choice, index)}
-                  className={`cursor-pointer bg-white p-3 rounded-lg shadow-lg ${
-                    selectedAnswerIndex === index
-                      ? "bg-gradient-to-r from-cyan-500 to-blue-500 text-white"
-                      : ""
-                  }`}
-                >
-                  {index + 1}. {choice}
-                </li>
+                  choice={choice}
+                  index={index}
+                  handleSelected={handleSelected}
+                  selectedAnswerIndex={selectedAnswerIndex}
+                />
               );
             })}
           </ul>
 
-          <div className="text-end">
-            <button
-              onClick={handleNext}
-              disabled={selectedAnswerIndex === null}
-              className="bg-gradient-to-r from-cyan-500 to-blue-500 px-10 py-2 rounded-lg text-white mt-5"
-            >
-              {activeQuestion !== questions.length - 1 ? "Next" : "Finish"}
-            </button>
-          </div>
+          <Button
+            onClickEvent={handleNext}
+            disabled={selectedAnswerIndex === null}
+            classes={"text-end"}
+          >
+            {activeQuestion !== questions.length - 1 ? "Next" : "Finish"}
+          </Button>
         </>
       ) : (
         <>
@@ -109,14 +101,9 @@ const QuizApp = () => {
               <h2 className="text-lg">Wrong Answers: {result.wrongAnswers}</h2>
             </div>
           </div>
-          <div className="text-center">
-            <button
-              onClick={handlePlayAgain}
-              className="bg-gradient-to-r from-cyan-500 to-blue-500 px-10 py-2 rounded-lg text-white mt-5"
-            >
-              Play Again
-            </button>
-          </div>
+          <Button onClickEvent={handlePlayAgain} classes={"text-center"}>
+            Play Again
+          </Button>
         </>
       )}
     </div>
