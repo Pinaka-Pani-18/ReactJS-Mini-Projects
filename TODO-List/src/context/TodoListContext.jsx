@@ -4,6 +4,7 @@ import { createContext, useContext, useReducer, useState } from "react";
 export const actions = {
   ADD: "add",
   DELETE: "delete",
+  EDIT: "edit",
   DELETEALL: "deleteAll",
 };
 
@@ -30,6 +31,19 @@ const reducer = (state, { type, payload }) => {
       return {
         counter: state.counter,
         Tasks: state.Tasks.filter((i) => i.id !== payload),
+      };
+    }
+
+    case actions.EDIT: {
+      const updatedTasks = state.Tasks.map((task) => {
+        if (task.id === payload.id) {
+          return { ...task, task: payload.updatedText };
+        }
+        return task;
+      });
+      return {
+        ...state,
+        Tasks: updatedTasks,
       };
     }
 

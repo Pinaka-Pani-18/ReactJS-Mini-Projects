@@ -1,6 +1,9 @@
+import { useState } from "react";
 import { actions, useTodoListContext } from "../context/TodoListContext";
 
 const TodoList = () => {
+  const [editTaskId, setEditTaskId] = useState(null);
+  const [editTaskText, setEditTaskText] = useState("null");
   const { state, dispatch, text, setText } = useTodoListContext();
 
   function handleAdd() {
@@ -9,6 +12,23 @@ const TodoList = () => {
       payload: text,
     });
     setText("");
+  }
+
+  function handleEdit(item) {
+    setEditTaskText(item.task);
+    setEditTaskId(item.id);
+  }
+
+  function handleSave() {
+    dispatch({
+      type: actions.EDIT,
+      payload: {
+        id: editTaskId,
+        updatedText: editTaskText,
+      },
+    });
+    setEditTaskId(null);
+    setEditTaskText("");
   }
 
   return (
@@ -48,20 +68,37 @@ const TodoList = () => {
               key={index}
               className="bg-white flex w-full justify-between border-b-blue-600 border-b p-4 h-auto"
             >
-              <span>
-                {index + 1}. {item.task}
-              </span>
+              {editTaskId === item.id ? (
+                <input
+                  type="text"
+                  value={editTaskText}
+                  className=" flex-grow outline-none"
+                  onChange={(e) => setEditTaskText(e.target.value)}
+                />
+              ) : (
+                <span>
+                  {index + 1}. {item.task}
+                </span>
+              )}
 
-              <button
-                onClick={() =>
-                  dispatch({
-                    type: actions.DELETE,
-                    payload: item.id,
-                  })
-                }
-              >
-                DEL
-              </button>
+              <div className="flex gap-4">
+                {editTaskId === item.id ? (
+                  <button onClick={handleSave}>SAVE</button>
+                ) : (
+                  <button onClick={() => handleEdit(item)}>EDIT</button>
+                )}
+
+                <button
+                  onClick={() =>
+                    dispatch({
+                      type: actions.DELETE,
+                      payload: item.id,
+                    })
+                  }
+                >
+                  DEL
+                </button>
+              </div>
             </li>
           );
         })}
