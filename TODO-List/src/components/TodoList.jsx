@@ -31,6 +31,16 @@ const TodoList = () => {
     setEditTaskText("");
   }
 
+  function handleEnterKey(e) {
+    if (e.key == "Enter") {
+      dispatch({
+        type: actions.ADD,
+        payload: text,
+      });
+      setText("");
+    }
+  }
+
   return (
     <>
       <h1 className="mt-28 tracking-[.2rem] mb-8 font-bold rounded-full text-red-500 bg-white py-3 px-10">
@@ -42,6 +52,7 @@ const TodoList = () => {
           className=" flex-grow px-5 text-3xl outline-none"
           value={text}
           onChange={(e) => setText(e.target.value)}
+          onKeyDown={(e) => handleEnterKey(e)}
         />
         <button
           className="bg-red-500 hover:bg-red-400 text-white p-3 rounded-full"
