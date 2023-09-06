@@ -1,11 +1,18 @@
 /* eslint-disable react/prop-types */
-import { createContext, useContext, useReducer, useState } from "react";
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useReducer,
+  useState,
+} from "react";
 
 export const actions = {
   ADD: "add",
   DELETE: "delete",
   EDIT: "edit",
   DELETEALL: "deleteAll",
+  GET_LOCAL_STORAGE_ITEMS: "getLocalStorageItems",
 };
 
 const context = createContext();
@@ -50,6 +57,10 @@ const reducer = (state, { type, payload }) => {
     case actions.DELETEALL: {
       return initialState;
     }
+
+    case actions.GET_LOCAL_STORAGE_ITEMS: {
+      return payload;
+    }
   }
 };
 
@@ -65,6 +76,22 @@ export const useTodoListContext = () => {
 const TodoListContext = ({ children }) => {
   const [text, setText] = useState("");
   const [state, dispatch] = useReducer(reducer, initialState);
+
+  useEffect(() => {
+    const items = JSON.parse(localStorage.getItem("Todo-List"));
+    if (items) {
+      dispatch({
+        type: actions.GET_LOCAL_STORAGE_ITEMS,
+        payload: items,
+      });
+    }
+  }, []);
+
+  useEffect(() => {
+    if (state !== initialState) {
+      localStorage.setItem("Todo-List", JSON.stringify(state));
+    }
+  }, [state]);
 
   return (
     <context.Provider value={{ state, dispatch, text, setText }}>
