@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Modal from "./Modal";
-import { Button, Container, Grid, Stack, Typography } from "@mui/material";
+import { Box, Button, Container, Grid, Stack, Typography } from "@mui/material";
 
 import { addDoc, collection, onSnapshot } from "firebase/firestore";
 import { database } from "../firebase/firebaseConfig";
@@ -62,75 +62,88 @@ const Docs = () => {
   }, []);
 
   return (
-    <Container
-      className="docsContainer"
-      sx={{
-        textAlign: "center",
-      }}
-      fixed
-    >
-      <Typography
-        variant="h3"
+    <Box sx={{ background: "rgb(245,2,254)", minHeight: "100vh" }}>
+      <Container
+        className="docsContainer"
         sx={{
-          marginTop: "1rem",
-          marginBottom: ".5rem",
+          textAlign: "center",
         }}
+        fixed
       >
-        DOCS APP
-      </Typography>
-      <Button variant="contained" onClick={handleOpen} startIcon={<AddIcon />}>
-        Add a Document
-      </Button>
-      <Modal
-        open={open}
-        title={title}
-        setTitle={setTitle}
-        addData={addData}
-        handleClose={handleClose}
-      />
-      <Grid
-        container
-        spacing={2}
-        columns={{ xs: 4, sm: 8, md: 12 }}
-        sx={{
-          marginTop: "1rem",
-        }}
-      >
-        {docsData.map((docData, index) => {
-          return (
-            <Grid item key={index} xs={4}>
-              <Stack
-                sx={{
-                  border: "1px solid red",
-                  borderRadius: "25px",
-                  color: "black",
-                  paddingY: "1rem ",
-                  cursor: "pointer",
-                  height: "5rem",
-                  overflowY: "auto",
-                  boxShadow: "0 0 20px rgba(0,0,0,.1)",
-                }}
-                onClick={() => getId(docData.id)}
-              >
-                <Typography
-                  variant="h5"
+        <Typography
+          variant="h1"
+          sx={{
+            paddingTop: "1rem",
+            marginBottom: ".5rem",
+            fontWeight: "700",
+            color: "white",
+          }}
+        >
+          DOCS APP
+        </Typography>
+        <Button
+          variant="contained"
+          onClick={handleOpen}
+          startIcon={<AddIcon />}
+        >
+          Add a Document
+        </Button>
+        <Modal
+          open={open}
+          title={title}
+          setTitle={setTitle}
+          addData={addData}
+          handleClose={handleClose}
+        />
+        <Grid
+          container
+          spacing={2}
+          columns={{ xs: 4, sm: 8, md: 12 }}
+          sx={{
+            marginTop: "1rem",
+          }}
+        >
+          {docsData.map((docData, index) => {
+            return (
+              <Grid item key={index} xs={4}>
+                <Stack
                   sx={{
-                    fontWeight: "600",
-                    textTransform: "capitalize",
+                    border: "2px solid black",
+                    borderRadius: "10px",
+                    color: "rgb(245,2,254)",
+                    backgroundColor: "white",
+                    paddingY: ".5rem ",
+                    cursor: "pointer",
+                    height: "6rem",
+                    overflowY: "auto",
+                    boxShadow: "0 0 20px white",
                   }}
+                  onClick={() => getId(docData.id)}
                 >
-                  {docData.title}
-                </Typography>
+                  <Typography
+                    variant="h5"
+                    sx={{
+                      fontWeight: "500",
+                      textTransform: "capitalize",
+                      color: "black",
+                    }}
+                  >
+                    {docData.title}
+                  </Typography>
 
-                <Typography
-                  dangerouslySetInnerHTML={{ __html: docData.docsDesc }}
-                />
-              </Stack>
-            </Grid>
-          );
-        })}
-      </Grid>
-    </Container>
+                  <Typography
+                    sx={{
+                      color: "gray",
+                    }}
+                    dangerouslySetInnerHTML={{ __html: docData.docsDesc }}
+                  />
+                </Stack>
+              </Grid>
+            );
+          })}
+        </Grid>
+      </Container>
+    </Box>
   );
 };
 
