@@ -2,14 +2,30 @@
 
 import { useState } from "react";
 import Modal from "./Modal";
-import { Box, Button, Container, Grid, Stack, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Container,
+  Grid,
+  IconButton,
+  Stack,
+  Typography,
+} from "@mui/material";
 
-import { addDoc, collection, onSnapshot } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  deleteDoc,
+  doc,
+  onSnapshot,
+} from "firebase/firestore";
 import { database } from "../firebase/firebaseConfig";
 import { useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
 import AddIcon from "@mui/icons-material/Add";
+import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
+import BorderColorOutlinedIcon from "@mui/icons-material/BorderColorOutlined";
 
 const Docs = () => {
   const [open, setOpen] = useState(false);
@@ -26,6 +42,10 @@ const Docs = () => {
   let navigate = useNavigate();
 
   const addData = () => {
+    if (title === "") {
+      return;
+    }
+
     addDoc(collectionRef, {
       title: title,
       docsDesc: "",
@@ -37,6 +57,7 @@ const Docs = () => {
       .catch(() => {
         alert("Cannot add data");
       });
+    setTitle("");
   };
 
   const getData = () => {
@@ -61,8 +82,16 @@ const Docs = () => {
     getData();
   }, []);
 
+  function deleteItem(id) {
+    const document = doc(collectionRef, id);
+    deleteDoc(document, {
+      title: "",
+      docsDesc: "",
+    });
+  }
+
   return (
-    <Box sx={{ background: "rgb(245,2,254)", minHeight: "100vh" }}>
+    <Box sx={{ background: "rgba(0, 0, 0, 0.04)", minHeight: "100vh" }}>
       <Container
         className="docsContainer"
         sx={{
@@ -71,18 +100,21 @@ const Docs = () => {
         fixed
       >
         <Typography
-          variant="h1"
+          variant="h3"
           sx={{
             paddingTop: "1rem",
             marginBottom: ".5rem",
             fontWeight: "700",
-            color: "white",
+            color: "gray",
           }}
         >
           DOCS APP
         </Typography>
         <Button
-          variant="contained"
+          variant="outline"
+          sx={{
+            border: "2px solid gray",
+          }}
           onClick={handleOpen}
           startIcon={<AddIcon />}
         >
@@ -108,32 +140,66 @@ const Docs = () => {
               <Grid item key={index} xs={4}>
                 <Stack
                   sx={{
-                    border: "2px solid black",
+                    border: "2px solid gray",
                     borderRadius: "10px",
-                    color: "rgb(245,2,254)",
-                    backgroundColor: "white",
-                    paddingY: ".5rem ",
-                    cursor: "pointer",
+                    backgroundColor: "transparent",
+                    padding: "1rem ",
                     height: "6rem",
                     overflowY: "auto",
-                    boxShadow: "0 0 20px white",
+                    position: "relative",
                   }}
-                  onClick={() => getId(docData.id)}
                 >
-                  <Typography
-                    variant="h5"
-                    sx={{
-                      fontWeight: "500",
-                      textTransform: "capitalize",
-                      color: "black",
-                    }}
-                  >
-                    {docData.title}
-                  </Typography>
+                  <Stack justifyContent={"center"}>
+                    <Typography
+                      sx={{
+                        fontWeight: "500",
+                        textTransform: "capitalize",
+                        color: "black",
+                        textAlign: "start",
+                        width: "75%",
+                        wordBreak: "break-all",
+                        wordWrap: "break-word",
+                        lineHeight: "1rem",
+                      }}
+                    >
+                      {docData.title}
+                    </Typography>
+                    <Stack
+                      position={"absolute"}
+                      direction={"row"}
+                      spacing={0}
+                      sx={{
+                        color: "rgba(0,0,0,.6)",
+                        right: ".5rem",
+                      }}
+                    >
+                      <IconButton aria-label="delete">
+                        <BorderColorOutlinedIcon
+                          onClick={() => getId(docData.id)}
+                          sx={{
+                            cursor: "pointer",
+                          }}
+                          fontSize="small"
+                        />
+                      </IconButton>
+                      <IconButton aria-label="delete">
+                        <DeleteOutlineOutlinedIcon
+                          onClick={() => deleteItem(docData.id)}
+                          sx={{
+                            cursor: "pointer",
+                          }}
+                          fontSize="small"
+                        />
+                      </IconButton>
+                    </Stack>
+                  </Stack>
 
                   <Typography
                     sx={{
+                      marginTop: ".5rem",
                       color: "gray",
+                      lineHeight: "1.1rem",
+                      textAlign: "start",
                     }}
                     dangerouslySetInnerHTML={{ __html: docData.docsDesc }}
                   />

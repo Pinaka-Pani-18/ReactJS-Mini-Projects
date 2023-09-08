@@ -55,15 +55,25 @@ const EditDoc = () => {
   }, []);
 
   return (
-    <Container>
+    <Container
+      sx={{
+        background: "rgba(0, 0, 0, 0.04)",
+      }}
+    >
       <Typography
         variant="h5"
-        sx={{ textTransform: "capitalize", margin: "1rem 0" }}
+        sx={{ textTransform: "capitalize", margin: "1rem 0", color: "gray" }}
       >
         {documentTitle}
       </Typography>
       <div dangerouslySetInnerHTML={{ __html: doc.docsDesc }} />
-      <ReactQuill value={docsDescription} onChange={getQuillData} />
+      <ReactQuill
+        style={{
+          border: "2px solid gray",
+        }}
+        value={docsDescription}
+        onChange={getQuillData}
+      />
     </Container>
   );
 };

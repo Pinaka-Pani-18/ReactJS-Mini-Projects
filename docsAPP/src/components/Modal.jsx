@@ -1,4 +1,5 @@
 /* eslint-disable react/prop-types */
+import { styled } from "@mui/material/styles";
 import { Button, TextField } from "@mui/material";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
@@ -8,14 +9,36 @@ const style = {
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: 400,
-  borderRadius: "25px",
-  bgcolor: "background.paper",
-  border: "1px solid #000",
+  minWidth: 250,
+  borderRadius: "1rem",
+  bgcolor: "rgba(255,255,255,.7)",
+  border: "2px solid gray",
   boxShadow: 24,
-  p: 4,
+  padding: "2rem",
   textAlign: "center",
 };
+
+const CssTextField = styled(TextField)({
+  "& label.Mui-focused": {
+    color: "gray",
+  },
+  "& .MuiInput-underline:after": {
+    border: "2px solid",
+    borderBottomColor: "#B2BAC2",
+  },
+  "& .MuiOutlinedInput-root": {
+    "& fieldset": {
+      borderColor: "gray",
+      border: "2px solid gray",
+    },
+    "&:hover fieldset": {
+      borderColor: "gray",
+    },
+    "&.Mui-focused fieldset": {
+      borderColor: "gray",
+    },
+  },
+});
 
 export default function ModalComponent({
   open,
@@ -34,25 +57,26 @@ export default function ModalComponent({
         aria-describedby="keep-mounted-modal-description"
       >
         <Box sx={style}>
-          <TextField
-            id="outlined-basic"
-            label="Add Title"
+          <CssTextField
             sx={{
               width: "100%",
             }}
-            variant="outlined"
+            label="Add Title"
+            id="custom-css-outlined-input"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
           />
+
           <Button
-            variant="contained"
+            variant="outline"
             sx={{
               marginTop: "2rem",
               paddingX: "4rem",
+              border: "2px solid gray",
             }}
             onClick={addData}
           >
-            ADD
+            Add
           </Button>
         </Box>
       </Modal>
