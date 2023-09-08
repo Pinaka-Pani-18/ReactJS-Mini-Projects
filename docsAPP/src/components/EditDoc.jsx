@@ -56,7 +56,12 @@ const EditDoc = () => {
 
   return (
     <Container>
-      <Typography>{documentTitle}</Typography>
+      <Typography
+        variant="h5"
+        sx={{ textTransform: "capitalize", margin: "1rem 0" }}
+      >
+        {documentTitle}
+      </Typography>
       <div dangerouslySetInnerHTML={{ __html: doc.docsDesc }} />
       <ReactQuill value={docsDescription} onChange={getQuillData} />
     </Container>
