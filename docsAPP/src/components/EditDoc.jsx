@@ -26,13 +26,9 @@ const EditDoc = () => {
       const document = doc(collectionRef, params.id);
       updateDoc(document, {
         docsDesc: docsDescription,
-      })
-        .then(() => {
-          alert("Saved");
-        })
-        .catch(() => {
-          alert("Cannot Save");
-        });
+      }).catch(() => {
+        alert("Cannot Save");
+      });
     }, 1000);
     return () => clearTimeout(updateDocsData);
   }, [docsDescription, params.id, collectionRef]);
