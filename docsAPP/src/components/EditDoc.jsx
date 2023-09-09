@@ -51,26 +51,29 @@ const EditDoc = () => {
   }, []);
 
   return (
-    <Container
-      sx={{
+    <div
+      style={{
         background: "rgba(0, 0, 0, 0.04)",
+        minHeight: "100vh",
       }}
     >
-      <Typography
-        variant="h5"
-        sx={{ textTransform: "capitalize", margin: "1rem 0", color: "gray" }}
-      >
-        {documentTitle}
-      </Typography>
-      <div dangerouslySetInnerHTML={{ __html: doc.docsDesc }} />
-      <ReactQuill
-        style={{
-          border: "2px solid gray",
-        }}
-        value={docsDescription}
-        onChange={getQuillData}
-      />
-    </Container>
+      <Container>
+        <Typography
+          variant="h5"
+          sx={{ textTransform: "capitalize", padding: "1rem 0", color: "gray" }}
+        >
+          {documentTitle}
+        </Typography>
+        <div dangerouslySetInnerHTML={{ __html: doc.docsDesc }} />
+        <ReactQuill
+          style={{
+            border: "2px solid gray",
+          }}
+          value={docsDescription}
+          onChange={getQuillData}
+        />
+      </Container>
+    </div>
   );
 };
 
